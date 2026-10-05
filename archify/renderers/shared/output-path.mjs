@@ -1,6 +1,5 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { escapeHtml } from './i18n.mjs';
 import {
   containedBy,
   isValidWindowsSmbShareName,
@@ -381,7 +380,11 @@ function isMatchingGeneratedHtml(html, title) {
   const head = markup.match(/^\s*<!doctype html>\s*<html\b[^>]*>\s*<head\b[^>]*>([\s\S]*?)<\/head\s*>/i)?.[1];
   if (!head || !/<meta name="generator" content="archify \d+\.\d+\.\d+[^"<>]*"\s*\/?\s*>/.test(head)) return false;
   const names = [...markup.matchAll(/<svg\b[^>]*\baria-labelledby="archify-diagram-title archify-diagram-description"[^>]*>\s*<title id="archify-diagram-title">([^<]*)<\/title>/g)];
-  return names.length === 1 && names[0][1] === escapeHtml(title);
+  // Match the renderer's escaping without loading translation catalogs into
+  // the path-safety runtime, which is also used by standalone packaging tools.
+  const escapedTitle = title.replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+  return names.length === 1 && names[0][1] === escapedTitle;
 }
 
 function requireReplacementIntent(outputPath, source, regeneration) {

@@ -17,7 +17,7 @@ function fixture(t, authored = true) {
   t.after(() => fs.rmSync(cwd, { recursive: true, force: true }));
   const input = path.join(cwd, 'input.json');
   const diagram = JSON.parse(fs.readFileSync(path.join(skillRoot, 'examples/web-app.architecture.json'), 'utf8'));
-  diagram.meta.title = 'Replacement <fixture> & test';
+  diagram.meta.title = `Replacement <fixture> & "quoted" 'test'`;
   if (authored) diagram.meta.output = 'result.html';
   else delete diagram.meta.output;
   fs.writeFileSync(input, JSON.stringify(diagram));
