@@ -30,7 +30,7 @@ It also accepts `locale`, any well-formed language tag (schema pattern
 `^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$`). The field selects the fixed Viewer UI,
 renderer-owned default legend and accessibility copy, document-title suffix,
 and `<html lang>` value; it does not translate authored strings. The bundled
-catalogs enrolled in `locales/manifest.json` (`en`, `zh-CN`, `es`, `ko`) are
+catalogs enrolled in `locales/manifest.json` (`en`, `zh-CN`, `zh-TW`, `es`, `ko`) are
 selected by tag, case-insensitively; region and script variants are distinct
 tags. Any other tag needs a matching `translations` object (see below) or the
 renderer falls back to English and discloses it.
@@ -49,10 +49,10 @@ report rejected entries and the final resolved coverage to stderr.
 motion-forward presentation), `blueprint` (high-contrast engineering review),
 or `editorial` (warm publication-style design review and documentation).
 Presets change only viewer styling; they do not alter semantic IDs or geometry.
-Sequence `meta` additionally accepts `column_fit`. The default `fixed` keeps
-the historical 108px column gap and 86px participant boxes, so an authored
-diagram renders at the same coordinates no matter how wide its viewBox is.
-`spread` derives the gap and box width from the viewBox instead, which turns a
+Sequence `meta` additionally accepts `column_fit`. The default `spread` applies whether or not `meta.viewBox` is supplied.
+Explicit `fixed` keeps the historical 108px column gap and 86px participant
+boxes. `spread` derives column distance and box width from the viewBox, with
+at least a 16px gutter between participant cards, which turns a
 wide canvas into column distance and label room rather than empty space on the
 right. Lane order, IDs, and message semantics are unchanged either way.
 
